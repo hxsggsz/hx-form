@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IForm } from "./useForm.types";
+import { zodValidation } from "./utils/zodValidation";
 
 /**
  *
@@ -18,33 +19,10 @@ export function useForm<T extends Record<string, string>>({
   const [inputs, setInputs] = useState(defaultValues);
   const [errors, setErrors] = useState<T | null>(null);
 
-  function addValueToObject(
-    object: Record<string, string>,
-    key: string,
-    value: string
-  ) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for (const [mainKey, _] of Object.entries(object)) {
-      if (mainKey === key) {
-        object[mainKey] = value;
-        return;
-      }
-    }
-    object[key] = value;
-  }
-
   const validationValues = (inputs: T) => {
     const errors = {} as unknown as T;
 
-    const result = schema && schema.safeParse(inputs);
-    if (result && !result.success) {
-      result.error.issues.map((zodErrors) => {
-        const errorKey = zodErrors.path[0].toString();
-        const errorValue = zodErrors.message;
-
-        addValueToObject(errors, errorKey, errorValue);
-      });
-    }
+    schema && zodValidation(schema, inputs, errors);
 
     validation && validation(inputs, errors);
 
