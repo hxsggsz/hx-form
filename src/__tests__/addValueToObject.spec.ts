@@ -1,7 +1,6 @@
 import { addValueToObject } from "../utils/addValueToObject";
 
 describe("addValueToObject()", () => {
-  beforeEach(() => {});
   describe("when pass a value to an existing key", () => {
     it("adds the value to object correctly", () => {
       const test = {
