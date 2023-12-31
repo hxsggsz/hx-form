@@ -3,8 +3,7 @@ import { IForm } from "./useForm.types";
 import { zodValidation } from "./utils/zodValidation";
 
 /**
- *
- * @param defaultValues - the default values of the inputs that this hook wil handle
+ * @param defaultValues - the default values of the inputs that this hook will handle
  * @param validation - a function that will validate the inputs and add message errors to you application
  * @param handleSubmit - a function that will run when you submit a form
  * @param schema - a zod schema for validations with zod
@@ -15,7 +14,7 @@ export function useForm<T extends Record<string, string>>({
   handleSubmit,
   schema,
 }: IForm<T>) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [inputs, setInputs] = useState(defaultValues);
   const [errors, setErrors] = useState<T | null>(null);
 
@@ -36,7 +35,7 @@ export function useForm<T extends Record<string, string>>({
   return {
     errors,
     inputs,
-    isLoading,
+    isSubmitting,
     handleChange: (ev: React.FormEvent<HTMLInputElement>) => {
       const value = ev.currentTarget.value ?? ev.currentTarget.checked;
       const name = ev.currentTarget.name;
@@ -49,13 +48,13 @@ export function useForm<T extends Record<string, string>>({
 
     onSubmit: (ev: React.FormEvent<HTMLFormElement>) => {
       ev.preventDefault();
-      setIsLoading(true);
+      setIsSubmitting(true);
       const isErrors = validationValues(inputs);
 
       if (!isErrors) {
         handleSubmit(inputs, ev);
       }
-      setIsLoading(false);
+      setIsSubmitting(false);
     },
   };
 }
