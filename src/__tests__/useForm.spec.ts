@@ -6,21 +6,25 @@ describe("useForm", () => {
   describe("when initialize", () => {
     it("renders the defaults values correctly", () => {
       const defaultValues = {
-        test: "",
+        string: "",
+        number: 0,
+        boolean: true,
       };
       const { result } = renderHook(() =>
-        useForm({ defaultValues, handleSubmit: () => { } })
+        useForm({ defaultValues, handleSubmit: () => {} })
       );
 
       expect(result.current.errors).toBeNull();
-      expect(result.current.inputs.test).toBe("");
+      expect(result.current.inputs.string).toBe("");
+      expect(result.current.inputs.number).toBe(0);
+      expect(result.current.inputs.boolean).toBeTruthy();
       expect(result.current.isSubmitting).toBeFalsy();
     });
   });
 
-  describe('when changes the input value', () => {
-    describe('when name of the input is correct', () => {
-      it('updates the value correctly', () => {
+  describe("when changes the input value", () => {
+    describe("when name of the input is correct", () => {
+      it("updates the value correctly when is string", () => {
         const defaultValues = {
           test: "",
         };
@@ -29,21 +33,65 @@ describe("useForm", () => {
           currentTarget: {
             value: "test value",
             name: "test",
-          }
-        } as unknown as React.FormEvent<HTMLInputElement>
+          },
+        } as unknown as React.FormEvent<HTMLInputElement>;
         const { result } = renderHook(() =>
-          useForm({ defaultValues, handleSubmit: () => { } })
+          useForm({ defaultValues, handleSubmit: () => {} })
         );
 
-        act(() => result.current.handleChange(mockEventValue))
+        act(() => result.current.handleChange(mockEventValue));
 
-        expect(result.current.inputs.test).toBe("test value")
+        expect(result.current.inputs.test).toBe("test value");
+        expect(result.current.errors).toBeNull();
+      });
+
+      it("updates the value correctly when is number", () => {
+        const defaultValues = {
+          test: 0,
+        };
+
+        const mockEventValue = {
+          currentTarget: {
+            value: "1",
+            name: "test",
+          },
+        } as unknown as React.FormEvent<HTMLInputElement>;
+
+        const { result } = renderHook(() =>
+          useForm({ defaultValues, handleSubmit: () => {} })
+        );
+
+        act(() => result.current.handleChange(mockEventValue));
+
+        expect(result.current.errors).toBeNull();
+        expect(result.current.inputs.test).toBe(1);
+        expect(typeof result.current.inputs.test).toBe("number");
+      });
+
+      it("updates the value correctly when is boolean", () => {
+        const defaultValues = {
+          test: true,
+        };
+
+        const mockEventValue = {
+          currentTarget: {
+            checked: false,
+            name: "test",
+          },
+        } as unknown as React.FormEvent<HTMLInputElement>;
+        const { result } = renderHook(() =>
+          useForm({ defaultValues, handleSubmit: () => {} })
+        );
+
+        act(() => result.current.handleChange(mockEventValue));
+
+        expect(result.current.inputs.test).toBeFalsy();
         expect(result.current.errors).toBeNull();
       });
     });
 
-    describe('when name of the input is wrong', () => {
-      it('does not updates the value', () => {
+    describe("when name of the input is wrong", () => {
+      it("does not updates the value", () => {
         const defaultValues = {
           test: "",
         };
@@ -52,129 +100,138 @@ describe("useForm", () => {
           currentTarget: {
             value: "test value",
             name: "wrong name input",
-          }
-        } as unknown as React.FormEvent<HTMLInputElement>
+          },
+        } as unknown as React.FormEvent<HTMLInputElement>;
         const { result } = renderHook(() =>
-          useForm({ defaultValues, handleSubmit: () => { } })
+          useForm({ defaultValues, handleSubmit: () => {} })
         );
 
-        act(() => result.current.handleChange(mockEventValue))
+        act(() => result.current.handleChange(mockEventValue));
 
-        expect(result.current.inputs.test).toBe("")
+        expect(result.current.inputs.test).toBe("");
         expect(result.current.errors).toBeNull();
       });
     });
 
-    describe('when submit', () => {
-      it('calls the submit function parameter', async () => {
+    describe("when submit", () => {
+      it("calls the submit function parameter", async () => {
         const defaultValues = {
           test: "",
         };
 
         const sumbmitEventMock = {
-          preventDefault: vi.fn()
-        } as unknown as React.FormEvent<HTMLFormElement>
+          preventDefault: vi.fn(),
+        } as unknown as React.FormEvent<HTMLFormElement>;
 
-        const submitMock = vi.fn()
+        const submitMock = vi.fn();
 
         const { result } = renderHook(() =>
           useForm({
-            defaultValues, handleSubmit: submitMock
+            defaultValues,
+            handleSubmit: submitMock,
           })
         );
 
-        act(() => result.current.onSubmit(sumbmitEventMock))
+        act(() => result.current.onSubmit(sumbmitEventMock));
 
-        expect(submitMock).toHaveBeenCalled()
-        expect(result.current.isSubmitting).toBeFalsy()
+        expect(submitMock).toHaveBeenCalled();
+        expect(result.current.isSubmitting).toBeFalsy();
       });
     });
 
-    describe('when has validation', () => {
-      describe('the validation breaks', () => {
-        it('get errors with function validation', () => {
+    describe("when has validation", () => {
+      describe("the validation breaks", () => {
+        it("get errors with function validation", () => {
           const defaultValues = {
             test: "submit test",
           };
 
           const sumbmitEventMock = {
-            preventDefault: vi.fn()
-          } as unknown as React.FormEvent<HTMLFormElement>
+            preventDefault: vi.fn(),
+          } as unknown as React.FormEvent<HTMLFormElement>;
 
-          const submitMock = vi.fn()
+          const submitMock = vi.fn();
 
           const { result } = renderHook(() =>
             useForm({
-              defaultValues, handleSubmit: submitMock, validation: (inputs, errors) => {
-                if (inputs.test === 'submit test') {
-                  errors.test = 'error message'
+              defaultValues,
+              handleSubmit: submitMock,
+              validation: (inputs, errors) => {
+                if (inputs.test === "submit test") {
+                  errors.test = "error message";
                 }
-              }
+              },
             })
           );
 
-          act(() => result.current.onSubmit(sumbmitEventMock))
+          act(() => result.current.onSubmit(sumbmitEventMock));
 
-          expect(result.current.errors).not.toBeNull()
-          expect(result.current.errors?.test).toBe('error message')
-        })
+          expect(result.current.errors).not.toBeNull();
+          expect(result.current.errors?.test).toBe("error message");
+        });
       });
 
-      describe('zod validation breaks', () => {
-        describe('custom message error', () => {
-          it('get errors with zod', () => {
+      describe("zod validation breaks", () => {
+        describe("custom message error", () => {
+          it("get errors with zod", () => {
             const defaultValues = {
               test: "submit test",
             };
 
             const sumbmitEventMock = {
-              preventDefault: vi.fn()
-            } as unknown as React.FormEvent<HTMLFormElement>
+              preventDefault: vi.fn(),
+            } as unknown as React.FormEvent<HTMLFormElement>;
 
-            const submitMock = vi.fn()
+            const submitMock = vi.fn();
 
             const testSchema = z.object({
-              test: z.string().max(3, 'custom message error')
-            })
+              test: z.string().max(3, "custom message error"),
+            });
             const { result } = renderHook(() =>
               useForm({
-                defaultValues, handleSubmit: submitMock, schema: testSchema
+                defaultValues,
+                handleSubmit: submitMock,
+                schema: testSchema,
               })
             );
 
-            act(() => result.current.onSubmit(sumbmitEventMock))
+            act(() => result.current.onSubmit(sumbmitEventMock));
 
-            expect(result.current.errors).not.toBeNull()
-            expect(result.current.errors?.test).toBe('custom message error')
-          })
+            expect(result.current.errors).not.toBeNull();
+            expect(result.current.errors?.test).toBe("custom message error");
+          });
         });
 
-        describe('default message error', () => {
-          it('get errors with zod', () => {
+        describe("default message error", () => {
+          it("get errors with zod", () => {
             const defaultValues = {
               test: "submit test",
             };
 
             const sumbmitEventMock = {
-              preventDefault: vi.fn()
-            } as unknown as React.FormEvent<HTMLFormElement>
+              preventDefault: vi.fn(),
+            } as unknown as React.FormEvent<HTMLFormElement>;
 
-            const submitMock = vi.fn()
+            const submitMock = vi.fn();
 
             const testSchema = z.object({
-              test: z.string().max(3)
-            })
+              test: z.string().max(3),
+            });
             const { result } = renderHook(() =>
               useForm({
-                defaultValues, handleSubmit: submitMock, schema: testSchema
+                defaultValues,
+                handleSubmit: submitMock,
+                schema: testSchema,
               })
             );
 
-            act(() => result.current.onSubmit(sumbmitEventMock))
+            act(() => result.current.onSubmit(sumbmitEventMock));
 
-            expect(result.current.errors).not.toBeNull()
-            expect(result.current.errors?.test).toBe('String must contain at most 3 character(s)')
-          })
+            expect(result.current.errors).not.toBeNull();
+            expect(result.current.errors?.test).toBe(
+              "String must contain at most 3 character(s)"
+            );
+          });
         });
       });
     });

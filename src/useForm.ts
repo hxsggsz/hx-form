@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IForm } from "./useForm.types";
+import { FormInputTypes, IForm } from "./useForm.types";
 import { zodValidation } from "./utils/zodValidation";
 
 /**
@@ -8,7 +8,7 @@ import { zodValidation } from "./utils/zodValidation";
  * @param handleSubmit - a function that will run when you submit a form
  * @param schema - a zod schema for validations with zod
  */
-export function useForm<T extends Record<string, string | number | boolean>>({
+export function useForm<T extends Record<string, FormInputTypes>>({
   defaultValues,
   validation,
   handleSubmit,
@@ -16,10 +16,10 @@ export function useForm<T extends Record<string, string | number | boolean>>({
 }: IForm<T>) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [inputs, setInputs] = useState(defaultValues);
-  const [errors, setErrors] = useState<Record<keyof T, any> | null>(null);
+  const [errors, setErrors] = useState<Record<keyof T, string> | null>(null);
 
   const validationValues = (inputs: T) => {
-    const errors = {} as unknown as Record<keyof T, any>;
+    const errors = {} as unknown as Record<keyof T, string>;
 
     schema && zodValidation(schema, inputs, errors);
 
@@ -39,7 +39,10 @@ export function useForm<T extends Record<string, string | number | boolean>>({
     isSubmitting,
     handleChange: (ev: React.FormEvent<HTMLInputElement>) => {
       const name = ev.currentTarget.name;
-      const value = typeof inputs[name] === 'string' ? ev.currentTarget.value : ev.currentTarget.checked;
+      const value =
+        typeof inputs[name] === "string" || typeof inputs[name] === "number"
+          ? ev.currentTarget.value
+          : ev.currentTarget.checked;
 
       setInputs({
         ...inputs,
