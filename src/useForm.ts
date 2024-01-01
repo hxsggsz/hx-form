@@ -8,7 +8,7 @@ import { zodValidation } from "./utils/zodValidation";
  * @param handleSubmit - a function that will run when you submit a form
  * @param schema - a zod schema for validations with zod
  */
-export function useForm<T extends Record<string, string>>({
+export function useForm<T extends Record<string, string | number | boolean>>({
   defaultValues,
   validation,
   handleSubmit,
@@ -16,10 +16,10 @@ export function useForm<T extends Record<string, string>>({
 }: IForm<T>) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [inputs, setInputs] = useState(defaultValues);
-  const [errors, setErrors] = useState<T | null>(null);
+  const [errors, setErrors] = useState<Record<keyof T, any> | null>(null);
 
   const validationValues = (inputs: T) => {
-    const errors = {} as unknown as T;
+    const errors = {} as unknown as Record<keyof T, any>;
 
     schema && zodValidation(schema, inputs, errors);
 
@@ -32,17 +32,18 @@ export function useForm<T extends Record<string, string>>({
     return hasErrors;
   };
 
+  //TODO: add tests when input is boolean and number
   return {
     errors,
     inputs,
     isSubmitting,
     handleChange: (ev: React.FormEvent<HTMLInputElement>) => {
-      const value = ev.currentTarget.value ?? ev.currentTarget.checked;
       const name = ev.currentTarget.name;
+      const value = typeof inputs[name] === 'string' ? ev.currentTarget.value : ev.currentTarget.checked;
 
       setInputs({
         ...inputs,
-        [name]: value,
+        [name]: typeof inputs[name] === "number" ? Number(value) : value,
       });
     },
 

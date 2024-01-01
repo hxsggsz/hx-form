@@ -3,7 +3,7 @@ import { addValueToObject } from "./addValueToObject";
 
 export function zodValidation(
   schema: z.Schema,
-  inputs: Record<string, string>,
+  inputs: Record<string, string | number | boolean>,
   errors: Record<string, string>
 ) {
   const result = schema && schema.safeParse(inputs);
