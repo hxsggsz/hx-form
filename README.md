@@ -1,30 +1,55 @@
-# React + TypeScript + Vite
+<p align="center">
+  <h1 align="center">
+  <a href="#home">
+    hxform
+  </a>
+  </h1>
+  <a href="https://github.com/hxsggsz/hx-form">
+    <h3 align="center">a simple way to handle forms with React</h3>
+  </a>
+</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Installation
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+    npm install hxform
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Examples
+
+- [here](https://github.com/hxsggsz/hx-form/tree/master/src/examples) you can see examples about using this lib.
+
+## How to Contribute
+
+1. **Forking the Repository:** Fork this repository to your own GitHub account by clicking the "Fork" button.
+2. **Cloning the Repository:** Clone the forked repository to your local machine:
+
+   ```bash
+   git clone <https://github.com/<YourUser>/hxform.git>
+   ```
+
+3. **Pick or Create an Issue:**
+
+4. **Create a Branch:** Create a branch from the develop branch to work on your changes:
+
+   ```bash
+   git checkout develop
+   git reset --hard upstream/develop
+   git checkout -b your-branch-name
+   ```
+
+5. **Make Changes:** Create or modify the snippet.
+6. **Testing:** Ensure that all changes are tested and do not introduce errors.
+
+   ```bash
+   git commit
+   ```
+
+7. **Update Documentation:** If necessary, update relevant documentation to reflect your changes.
+8. **Push Changes:** Push your changes to your fork:
+
+   ```bash
+   git push origin your-branch-name
+   ```
+
+9. **Pull Request (PR) Creation:** Open a Pull Request from your fork to the octopost repository on the develop branch, describing your changes and providing context about what was done.
