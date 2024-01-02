@@ -1,11 +1,11 @@
 {
   "name": "hxform",
   "private": false,
-  "version": "1.0.5",
+  "version": "1.0.7",
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.cjs.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": {
     "name": "Victor Hugo hxsggsz",
     "url": "https://www.linkedin.com/in/hxsggsz/"
@@ -78,5 +78,8 @@
     "vite": "^5.0.8",
     "vite-plugin-dts": "^3.7.0",
     "vitest": "^1.1.0"
+  },
+  "dependencies": {
+    "hxform": "^1.0.7"
   }
 }
