@@ -15,7 +15,8 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "hxform",
-      formats: ["es", "umd"],
+      formats: ["es", "cjs"],
+      fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
       external: ["react", "react-dom"],

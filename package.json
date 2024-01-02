@@ -1,11 +1,35 @@
 {
   "name": "hxform",
-  "private": true,
+  "private": false,
   "version": "1.0.0",
   "type": "module",
-  "main": "./dist/hxform.umd.js",
-  "module": "./dist/hxform.es.js",
+  "main": "./dist/index.es.js",
+  "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
+  "author": {
+    "name": "Victor Hugo hxsggsz",
+    "url": "https://www.linkedin.com/in/hxsggsz/"
+  },
+  "description": "a hook to handle forms in react",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hxsggsz/hxform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hxsggsz/hxform/issues"
+  },
+  "homepage": "https://github.com/hxsggsz/hxform#readme",
+  "keywords": [
+    "React",
+    "react",
+    "hooks",
+    "forms",
+    "formularios",
+    "formulários",
+    "useForm",
+    "javascript",
+    "typescript"
+  ],
   "scripts": {
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -13,6 +37,7 @@
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "storybook": "storybook dev -p 6006",
+    "release": "pnpm run build && changeset publish",
     "build-storybook": "storybook build"
   },
   "dependencies": {
