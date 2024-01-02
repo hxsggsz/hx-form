@@ -1,11 +1,11 @@
 {
   "name": "hxform",
   "private": false,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "main": "./dist/index.es.js",
   "module": "./dist/index.cjs.js",
-  "types": "./dist/useForm.d.ts",
+  "types": "./dist/index.d.ts",
   "author": {
     "name": "Victor Hugo hxsggsz",
     "url": "https://www.linkedin.com/in/hxsggsz/"
@@ -31,7 +31,7 @@
     "typescript"
   ],
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "tsup",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "test": "vitest",
     "test:watch": "vitest --watch",
