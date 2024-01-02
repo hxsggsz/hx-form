@@ -9,6 +9,15 @@
   </a>
 </p>
 
+<div align="center">
+
+![node-current](https://img.shields.io/badge/Node.js-18.x-green.svg?logo=nodedotjs)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg?logo=typescript)](https://www.typescriptlang.org/)
+[![pnpm](https://img.shields.io/badge/pnpm-8x-yellow?logo=pnpm)](https://pnpm.io/pt/)
+[![GitHub issues](https://img.shields.io/github/issues-raw/hxsggsz/hxform?logo=github)](https://github.com/devhatt/hatbot-discord/issues)
+
+</div>
+
 ## Installation
 
 ```bash
